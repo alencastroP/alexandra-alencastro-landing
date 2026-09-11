@@ -11,22 +11,26 @@ import { useReducedMotion } from '../../hooks/useReducedMotion'
  * dos carrosseis de logo: o olho le o grupo inteiro parado, em vez de
  * perseguir uma faixa em movimento.
  *
+ * A troca e em sequencia, nao cruzada: o grupo que sai some primeiro e
+ * so depois o novo entra. Com texto, o crossfade deixava um nome
+ * encavalado no outro durante a transicao.
+ *
  * Para o teclado e o leitor de tela isso e uma imagem so: o rotulo
  * (`legenda`) descreve a lista inteira e os itens ficam escondidos --
  * ninguem precisa esperar o giro para saber o que esta escrito.
  */
 const entra = keyframes`
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
 `
 
 const sai = keyframes`
-  from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(-14px); }
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: translateY(-6px); }
 `
 
-/* As duas camadas dividem a mesma celula da grade: a que sai fica por
-   cima da que entra, e a altura nao pula na troca. */
+/* As duas camadas dividem a mesma celula da grade: a altura nao pula na
+   troca, e como elas nunca aparecem juntas, nao ha sobreposicao. */
 const Palco = styled.div`
   display: grid;
 
@@ -43,15 +47,10 @@ const Camada = styled.div`
   gap: 12px 40px;
 `
 
-const Item = styled.span<{
-  $i: number
-  $stagger: number
-  $duration: number
-  $saindo?: boolean
-}>`
+const Item = styled.span<{ $delay: number; $duration: number; $saindo?: boolean }>`
   display: inline-flex;
   animation: ${p => (p.$saindo ? sai : entra)} ${p => p.$duration}ms ${ease.out} both;
-  animation-delay: ${p => p.$i * p.$stagger}s;
+  animation-delay: ${p => p.$delay}s;
 `
 
 interface CarouselProps {
@@ -59,9 +58,9 @@ interface CarouselProps {
   children: ReactNode
   /** Quantos itens por grupo. Sem isso, todos entram num grupo so. */
   count?: number
-  /** Atraso em segundos entre um item e o proximo. */
+  /** Atraso em segundos entre um item e o proximo, na entrada. */
   stagger?: number
-  /** Duracao da entrada e da saida, em milissegundos. */
+  /** Duracao da entrada em milissegundos. A saida leva metade. */
   duration?: number
   /** Tempo parado em cada grupo, em milissegundos. */
   interval?: number
@@ -96,6 +95,15 @@ export function Carousel({
   const [pausado, setPausado] = useState(false)
   const [estado, setEstado] = useState({ atual: 0, anterior: -1 })
 
+  /** A saida e mais curta que a entrada: sumir e rapido, chegar e calmo. */
+  const saida = duration / 2
+
+  // Mudou o tamanho dos grupos (girou o celular, redimensionou): recomeca
+  // do primeiro, em vez de sair uma camada agrupada do jeito antigo.
+  useEffect(() => {
+    setEstado({ atual: 0, anterior: -1 })
+  }, [grupos.length])
+
   useEffect(() => {
     if (semMovimento || pausado || grupos.length < 2) return
 
@@ -113,16 +121,12 @@ export function Carousel({
     }
   }, [semMovimento, pausado, grupos.length, interval, initialDelay])
 
-  // Tira a camada que saiu depois que a animacao dela termina, senao ela
-  // fica no DOM segurando a altura do palco.
+  // Tira a camada que saiu assim que ela terminou de sumir.
   useEffect(() => {
     if (estado.anterior < 0) return
-    const id = window.setTimeout(
-      () => setEstado(e => ({ ...e, anterior: -1 })),
-      duration + itens.length * stagger * 1000,
-    )
+    const id = window.setTimeout(() => setEstado(e => ({ ...e, anterior: -1 })), saida + 50)
     return () => window.clearTimeout(id)
-  }, [estado.anterior, duration, stagger, itens.length])
+  }, [estado.anterior, saida])
 
   // Sem movimento: nada gira, todo mundo aparece de uma vez.
   if (semMovimento) {
@@ -133,6 +137,14 @@ export function Carousel({
     )
   }
 
+  // O efeito que zera o indice roda depois do render: neste render ele
+  // ainda pode apontar para um grupo que nao existe mais.
+  const atual = estado.atual % grupos.length
+  const anterior = estado.anterior >= 0 ? estado.anterior % grupos.length : -1
+  const trocando = anterior >= 0 && anterior !== atual
+  /** O grupo novo espera o antigo sumir por inteiro. */
+  const espera = trocando ? saida / 1000 : 0
+
   return (
     <Palco
       className={className}
@@ -141,19 +153,19 @@ export function Carousel({
       onMouseEnter={() => setPausado(true)}
       onMouseLeave={() => setPausado(false)}
     >
-      {estado.anterior >= 0 && (
-        <Camada key={`sai-${estado.anterior}`} aria-hidden="true">
-          {grupos[estado.anterior].map((item, i) => (
-            <Item key={i} $i={i} $stagger={stagger} $duration={duration} $saindo>
+      {trocando && (
+        <Camada key={`sai-${anterior}`} aria-hidden="true">
+          {grupos[anterior].map((item, i) => (
+            <Item key={i} $delay={0} $duration={saida} $saindo>
               {item}
             </Item>
           ))}
         </Camada>
       )}
 
-      <Camada key={`entra-${estado.atual}`} aria-hidden="true">
-        {grupos[estado.atual].map((item, i) => (
-          <Item key={i} $i={i} $stagger={stagger} $duration={duration}>
+      <Camada key={`entra-${atual}`} aria-hidden="true">
+        {grupos[atual].map((item, i) => (
+          <Item key={i} $delay={espera + i * stagger} $duration={duration}>
             {item}
           </Item>
         ))}

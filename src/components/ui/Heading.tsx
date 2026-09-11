@@ -19,23 +19,17 @@ const titleStep = (theme: AppTheme, size: TitleSize) => {
   `
 }
 
-/** Rotulo curto acima dos titulos, puxado por um filete. */
+/**
+ * Rotulo curto acima dos titulos. So texto, sem traco na frente: um
+ * filete antes de cada rotulo, em toda secao, era a marca mais facil de
+ * reconhecer como template.
+ */
 export const Eyebrow = styled.p<{ $inverse?: boolean }>`
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
   font-size: ${p => p.theme.type.body.size};
   font-weight: 400;
   letter-spacing: 0.01em;
   color: ${p => (p.$inverse ? p.theme.textInverseMuted : p.theme.textMuted)};
-
-  &::before {
-    content: '';
-    width: 24px;
-    height: 1px;
-    background: currentColor;
-  }
 `
 
 /** Titulo de secao: peso 400 e tracking negativo, como pede a marca. */
@@ -52,7 +46,7 @@ export const SectionHead = styled.div`
   align-items: flex-end;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 20px 52px;
+  gap: 20px 56px;
   margin-bottom: ${p => p.theme.layout.sectionGap};
 
   > div {
@@ -60,10 +54,10 @@ export const SectionHead = styled.div`
   }
 `
 
-/** Paragrafo de apoio: driftwood, 16px, coluna curta. */
+/** Paragrafo de apoio: tom de apoio, 16px, coluna curta. */
 export const Lead = styled.p<{ $inverse?: boolean }>`
-  max-width: 440px;
+  max-width: 420px;
   font-size: ${p => p.theme.type.bodyLg.size};
-  line-height: ${p => p.theme.type.bodyLg.leading};
+  line-height: 1.6;
   color: ${p => (p.$inverse ? p.theme.textInverseMuted : p.theme.textMuted)};
 `

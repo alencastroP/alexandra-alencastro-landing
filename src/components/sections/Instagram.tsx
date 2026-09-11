@@ -40,18 +40,20 @@ const Seta = styled.button<{ $inverte?: boolean }>`
   place-items: center;
   width: 44px;
   height: 44px;
-  border: 1px solid ${p => p.theme.text};
+  border: 1px solid ${p => p.theme.borderStrong};
   border-radius: ${p => p.theme.radius.pill};
   background: transparent;
   color: ${p => p.theme.text};
   cursor: pointer;
-  transition: background-color 0.25s ${ease.inOut}, color 0.25s ${ease.inOut};
+  transition: border-color 0.3s ${ease.inOut}, background-color 0.3s ${ease.inOut},
+    color 0.3s ${ease.inOut};
 
   svg {
     transform: ${p => (p.$inverte ? 'rotate(180deg)' : 'none')};
   }
 
   &:hover {
+    border-color: ${p => p.theme.text};
     background: ${p => p.theme.text};
     color: ${p => p.theme.bg};
   }
@@ -61,8 +63,7 @@ const Seta = styled.button<{ $inverte?: boolean }>`
    ate a borda da tela, deixando claro que ha mais post do lado. */
 const Trilho = styled.ul`
   display: flex;
-  gap: ${p => p.theme.layout.elementGap};
-  margin-top: 40px;
+  gap: 16px;
   margin-right: calc(-1 * max(24px, (100vw - ${p => p.theme.layout.maxWidth}) / 2));
   padding-right: 24px;
   overflow-x: auto;
@@ -80,8 +81,10 @@ const Trilho = styled.ul`
   }
 `
 
+/* Imagem sem contorno: o raio e o fundo quase invisivel bastam para a
+   foto nao virar um recorte duro na pagina. */
 const Post = styled.li`
-  flex: 0 0 clamp(200px, 23vw, 260px);
+  flex: 0 0 clamp(210px, 23vw, 270px);
   scroll-snap-align: start;
 
   a {
@@ -92,10 +95,9 @@ const Post = styled.li`
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
-    border: 1px solid ${p => p.theme.border};
     border-radius: ${p => p.theme.radius.card};
     background: ${p => p.theme.borderSoft};
-    transition: border-color 0.3s ${ease.inOut};
+    transition: opacity 0.4s ${ease.out};
   }
 
   figcaption {
@@ -103,14 +105,15 @@ const Post = styled.li`
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    margin-top: 10px;
+    margin-top: 12px;
     font-size: ${p => p.theme.type.body.size};
-    line-height: 1.45;
+    line-height: 1.5;
     color: ${p => p.theme.textMuted};
+    transition: color 0.3s ${ease.inOut};
   }
 
   a:hover img {
-    border-color: ${p => p.theme.textMuted};
+    opacity: 0.85;
   }
 
   a:hover figcaption {
@@ -118,22 +121,21 @@ const Post = styled.li`
   }
 `
 
-/* Enquanto o feed responde: mesma medida dos posts, so o contorno. */
+/* Enquanto o feed responde: a mesma medida do post, so o fundo. */
 const Vazio = styled.li`
-  flex: 0 0 clamp(200px, 23vw, 260px);
+  flex: 0 0 clamp(210px, 23vw, 270px);
   aspect-ratio: 1;
-  border: 1px solid ${p => p.theme.border};
   border-radius: ${p => p.theme.radius.card};
+  background: ${p => p.theme.borderSoft};
 `
 
-/* Sem feed conectado: em vez de card falso, o convite para o perfil. */
+/* Sem feed conectado: o convite para o perfil, sem card falso. */
 const Convite = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 20px;
-  margin-top: 40px;
-  padding-top: 36px;
+  padding-top: 40px;
   border-top: 1px solid ${p => p.theme.border};
 `
 
@@ -141,16 +143,16 @@ const Arroba = styled.a`
   display: block;
   max-width: 100%;
   overflow: hidden;
-  font-size: clamp(40px, 9vw, ${p => p.theme.type.hero.size});
-  line-height: 1;
-  letter-spacing: -0.03em;
+  font-size: clamp(32px, 6vw, ${p => p.theme.type.displayLg.size});
+  line-height: 1.1;
+  letter-spacing: -0.02em;
   white-space: nowrap;
-  color: transparent;
-  -webkit-text-stroke: 1px ${p => p.theme.border};
-  transition: -webkit-text-stroke-color 0.35s ${ease.inOut};
+  text-overflow: ellipsis;
+  color: ${p => p.theme.textMuted};
+  transition: color 0.4s ${ease.inOut};
 
   &:hover {
-    -webkit-text-stroke-color: ${p => p.theme.text};
+    color: ${p => p.theme.text};
   }
 `
 
@@ -162,7 +164,7 @@ export function Instagram() {
     const linha = trilho.current
     if (!linha) return
     const item = linha.firstElementChild as HTMLElement | null
-    const passo = item ? item.offsetWidth + 12 : linha.clientWidth * 0.8
+    const passo = item ? item.offsetWidth + 16 : linha.clientWidth * 0.8
     linha.scrollBy({ left: passo * direcao * 2, behavior: 'smooth' })
   }
 
@@ -229,7 +231,7 @@ export function Instagram() {
                 ))}
           </Trilho>
         ) : (
-          <Reveal delay={0.1}>
+          <Reveal delay={0.08}>
             <Convite>
               <Arroba href={perfil.instagram} target="_blank" rel="noopener noreferrer">
                 {perfil.instagramUsuario}

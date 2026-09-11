@@ -85,7 +85,7 @@ const Burger = styled.button`
   place-items: center;
   width: 44px;
   height: 44px;
-  border: 1px solid ${p => p.theme.border};
+  border: 1px solid ${p => p.theme.borderStrong};
   border-radius: ${p => p.theme.radius.pill};
   background: transparent;
   color: ${p => p.theme.text};

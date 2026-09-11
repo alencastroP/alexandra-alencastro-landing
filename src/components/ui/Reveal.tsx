@@ -7,7 +7,7 @@ const Animated = styled.div<{ $visible: boolean; $delay: number }>`
   ${p =>
     p.$visible
       ? css`
-          animation: ${riseIn} 0.8s ${ease.out} both;
+          animation: ${riseIn} 1s ${ease.out} both;
           animation-delay: ${p.$delay}s;
         `
       : css`
@@ -17,13 +17,13 @@ const Animated = styled.div<{ $visible: boolean; $delay: number }>`
 
 interface RevealProps {
   children: ReactNode
-  /** Atraso da animacao em segundos. */
+  /** Atraso da animacao em segundos. Acima de 0.15 ja parece espera. */
   delay?: number
   className?: string
 }
 
 /**
- * Revela o conteudo quando ele entra na viewport: sobe 14px e aparece.
+ * Revela o conteudo quando ele entra na viewport: 10px e opacidade.
  * Um gesto so, curto e discreto -- a marca assenta, nao se exibe.
  */
 export function Reveal({ children, delay = 0, className }: RevealProps) {

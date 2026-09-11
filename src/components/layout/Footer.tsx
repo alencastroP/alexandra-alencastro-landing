@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { Container } from '../ui/Container'
 import { Icon } from '../ui/Icon'
-import { Mark } from '../ui/Mark'
 import { navLinks, perfil } from '../../data/content'
 import { mensagemPadrao, whatsappUrl } from '../../utils/whatsapp'
 import { bp } from '../../styles/theme'
@@ -9,17 +8,15 @@ import { bp } from '../../styles/theme'
 /** Midnight Cocoa: um degrau abaixo da pagina, fecha a leitura. */
 const Wrap = styled.footer`
   overflow: hidden;
-  padding: 52px 0 24px;
+  padding: 72px 0 28px;
   background: ${p => p.theme.bgDeep};
-  border-top: 1px solid ${p => p.theme.borderSoft};
 `
 
 const Top = styled.div`
   display: grid;
   grid-template-columns: 1.4fr 1fr 1fr;
-  gap: 32px;
-  padding-bottom: 40px;
-  border-bottom: 1px solid ${p => p.theme.border};
+  gap: 40px;
+  padding-bottom: 48px;
 
   @media (max-width: ${bp.tablet}) {
     grid-template-columns: 1fr 1fr;
@@ -40,10 +37,7 @@ const BrandCol = styled.div`
     grid-column: 1 / -1;
   }
 
-  .brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
+  strong {
     font-size: ${p => p.theme.type.bodyLg.size};
     font-weight: 500;
   }
@@ -51,22 +45,24 @@ const BrandCol = styled.div`
   p {
     max-width: 320px;
     font-size: ${p => p.theme.type.body.size};
+    line-height: 1.6;
     color: ${p => p.theme.textMuted};
   }
 `
 
 const Col = styled.div`
   h2 {
-    margin-bottom: 14px;
-    font-size: ${p => p.theme.type.body.size};
-    font-weight: 500;
+    margin-bottom: 16px;
+    font-size: ${p => p.theme.type.caption.size};
+    font-weight: 400;
+    letter-spacing: 0.04em;
     color: ${p => p.theme.textMuted};
   }
 
   ul {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
   }
 
   a {
@@ -77,7 +73,7 @@ const Col = styled.div`
     text-decoration: underline;
     text-decoration-color: transparent;
     text-underline-offset: 5px;
-    transition: text-decoration-color 0.2s;
+    transition: text-decoration-color 0.3s;
   }
 
   a:hover {
@@ -85,16 +81,16 @@ const Col = styled.div`
   }
 `
 
-/* O nome em letra vazada, sangrando para fora da tela: assina a pagina
-   sem virar mais um paragrafo. E decoracao, entao sai do fluxo de leitura. */
+/* O nome em creme quase apagado, cortado pela borda: assina a pagina
+   como marca d'agua, sem virar mais um bloco de leitura. */
 const Assinatura = styled.div`
-  margin: 36px 0 8px;
+  margin: 8px 0 16px;
   font-size: clamp(56px, 13vw, 168px);
   line-height: 0.82;
   letter-spacing: -0.04em;
   white-space: nowrap;
-  color: transparent;
-  -webkit-text-stroke: 1px ${p => p.theme.border};
+  color: ${p => p.theme.text};
+  opacity: 0.05;
   user-select: none;
 `
 
@@ -104,10 +100,15 @@ const Bottom = styled.div`
   align-items: center;
   flex-wrap: wrap;
   gap: 12px 24px;
-  padding-top: 20px;
+  padding-top: 24px;
+  border-top: 1px solid ${p => p.theme.border};
   font-size: ${p => p.theme.type.caption.size};
   line-height: ${p => p.theme.type.caption.leading};
   color: ${p => p.theme.textMuted};
+
+  a {
+    transition: color 0.3s;
+  }
 
   a:hover {
     color: ${p => p.theme.text};
@@ -120,10 +121,7 @@ export function Footer() {
       <Container>
         <Top>
           <BrandCol>
-            <span className="brand">
-              <Mark aria-hidden="true">{perfil.monograma}</Mark>
-              {perfil.nome}
-            </span>
+            <strong>{perfil.nome}</strong>
             <p>
               {perfil.profissao} em {perfil.cidade}/{perfil.estado}. Compra, venda, aluguel e
               investimento em {perfil.regiao}.
@@ -167,7 +165,7 @@ export function Footer() {
           </Col>
         </Top>
 
-        <Assinatura aria-hidden="true">{perfil.nome.toUpperCase()}</Assinatura>
+        <Assinatura aria-hidden="true">{perfil.nome}</Assinatura>
 
         <Bottom>
           <p>

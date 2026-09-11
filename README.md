@@ -18,10 +18,8 @@ npm run typecheck
 
 ## Antes de publicar
 
-1. **O número de WhatsApp.** Em `src/data/content.ts`, troque `perfil.whatsapp`
-   (só dígitos: `55` + DDD + número) e `whatsappExibicao`. É o único dado
-   marcado com `[PREENCHER]` — todo o resto do conteúdo já é real. Em modo
-   dev, o console avisa enquanto o número ainda for o de exemplo.
+1. **Conteúdo.** Todo o texto e os dados (WhatsApp, CRECI, Instagram) estão
+   em `src/data/content.ts` e já são os reais.
 2. **Feed do Instagram (opcional).** A seção "O que eu ando postando" mostra
    um convite para o perfil até existir uma fonte de posts. Passo a passo
    completo em [INSTAGRAM.md](INSTAGRAM.md).

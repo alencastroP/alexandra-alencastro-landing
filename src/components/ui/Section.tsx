@@ -7,12 +7,15 @@ export type SectionTone = 'base' | 'deep' | 'inverse'
  * Bloco vertical padrao das secoes.
  *
  * O ritmo alterna faixas: `base` (espresso), `deep` (um degrau abaixo,
- * para faixas de dado) e `inverse` (creme, que vira o sistema do avesso --
- * usada uma vez so, no FAQ, para a pagina respirar).
+ * para a faixa do mostrador) e `inverse` (creme, que vira o sistema do
+ * avesso -- usada uma vez so, no FAQ, para a pagina respirar).
+ *
+ * O respiro vertical e generoso de proposito: e o espaco, mais do que
+ * qualquer linha, que separa uma secao da outra.
  */
 export const Section = styled.section<{ $tone?: SectionTone }>`
   position: relative;
-  padding: 72px 0;
+  padding: 112px 0;
 
   ${p =>
     p.$tone === 'deep' &&
@@ -32,7 +35,11 @@ export const Section = styled.section<{ $tone?: SectionTone }>`
       }
     `}
 
+  @media (max-width: ${bp.tablet}) {
+    padding: 88px 0;
+  }
+
   @media (max-width: ${bp.phone}) {
-    padding: 52px 0;
+    padding: 72px 0;
   }
 `

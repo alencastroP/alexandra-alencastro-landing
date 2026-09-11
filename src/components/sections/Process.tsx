@@ -4,23 +4,22 @@ import { Container } from '../ui/Container'
 import { Eyebrow, Lead, SectionHead, Title } from '../ui/Heading'
 import { PrimaryAction } from '../ui/Button'
 import { Reveal } from '../ui/Reveal'
-import { ease } from '../../styles/animations'
 import { bp } from '../../styles/theme'
 import { etapas, secoes } from '../../data/content'
 
-/* Linha do tempo de verdade: um fio atravessa as quatro etapas e cada uma
-   pendura um ponto nele. So o primeiro ponto e ambar -- e onde a pessoa
-   entra. No celular o mesmo fio vira vertical. */
+/* Linha do tempo: um fio atravessa as quatro etapas e cada uma pendura um
+   ponto nele. So o primeiro ponto e ambar -- e onde a pessoa entra. No
+   celular o mesmo fio vira vertical. */
 const Linha = styled.ol`
   position: relative;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 28px;
+  gap: 40px;
 
   &::before {
     content: '';
     position: absolute;
-    top: 5px;
+    top: 4px;
     left: 0;
     right: 0;
     height: 1px;
@@ -37,11 +36,11 @@ const Linha = styled.ol`
     position: absolute;
     top: 0;
     left: 0;
-    width: 11px;
-    height: 11px;
+    width: 9px;
+    height: 9px;
     border-radius: ${p => p.theme.radius.pill};
     background: ${p => p.theme.bg};
-    border: 1px solid ${p => p.theme.border};
+    border: 1px solid ${p => p.theme.borderStrong};
   }
 
   li:first-child::before {
@@ -50,14 +49,15 @@ const Linha = styled.ol`
   }
 
   h3 {
-    margin-bottom: 8px;
-    font-size: ${p => p.theme.type.subheading.size};
+    margin-bottom: 10px;
+    font-size: ${p => p.theme.type.bodyLg.size};
     font-weight: 500;
-    line-height: ${p => p.theme.type.subheading.leading};
+    line-height: 1.35;
   }
 
   p {
     font-size: ${p => p.theme.type.body.size};
+    line-height: 1.65;
     color: ${p => p.theme.textMuted};
   }
 
@@ -68,45 +68,38 @@ const Linha = styled.ol`
     &::before {
       top: 6px;
       bottom: 12px;
-      left: 5px;
+      left: 4px;
       right: auto;
       width: 1px;
       height: auto;
     }
 
     li {
-      padding: 0 0 28px 32px;
+      padding: 0 0 32px 32px;
     }
 
     li::before {
-      top: 1px;
+      top: 2px;
     }
   }
 `
 
-/* Numeral vazado atras do titulo, como marca d'agua da etapa. */
+/* Numero da etapa pequeno e espacado, como indice de livro. */
 const Numero = styled.span`
   display: block;
-  margin-bottom: 10px;
-  font-size: ${p => p.theme.type.display.size};
-  line-height: 0.9;
-  letter-spacing: ${p => p.theme.type.display.tracking};
-  color: transparent;
-  -webkit-text-stroke: 1px ${p => p.theme.border};
+  margin-bottom: 14px;
+  font-size: ${p => p.theme.type.caption.size};
+  letter-spacing: 0.14em;
   font-variant-numeric: tabular-nums;
-  transition: -webkit-text-stroke-color 0.35s ${ease.inOut};
-
-  li:hover & {
-    -webkit-text-stroke-color: ${p => p.theme.textMuted};
-  }
+  color: ${p => p.theme.textMuted};
 `
 
 const Cta = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px 20px;
-  margin-top: ${p => p.theme.layout.sectionGap};
+  gap: 12px 24px;
+  margin-top: 64px;
 
   p {
     font-size: ${p => p.theme.type.body.size};
@@ -128,7 +121,7 @@ export function Process() {
           </SectionHead>
         </Reveal>
 
-        <Reveal delay={0.1}>
+        <Reveal delay={0.08}>
           <Linha>
             {etapas.map(etapa => (
               <li key={etapa.numero}>

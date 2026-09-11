@@ -14,22 +14,22 @@ import { mensagemPadrao, whatsappUrl } from '../../utils/whatsapp'
 const Grid = styled.div`
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-  gap: 52px;
+  gap: 80px;
   align-items: start;
 
   @media (max-width: ${bp.tablet}) {
     grid-template-columns: minmax(0, 1fr);
-    gap: 32px;
+    gap: 40px;
   }
 `
 
 /* O titulo acompanha a leitura da lista enquanto ha perguntas na tela. */
 const Aside = styled.div`
   position: sticky;
-  top: calc(${p => p.theme.layout.navHeight} + 32px);
+  top: calc(${p => p.theme.layout.navHeight} + 40px);
 
   ${Lead} {
-    margin: 16px 0 24px;
+    margin: 18px 0 28px;
   }
 
   @media (max-width: ${bp.tablet}) {
@@ -37,13 +37,12 @@ const Aside = styled.div`
   }
 `
 
-/* Walnut a 30%: na faixa creme o filete cheio pesaria demais. */
 const List = styled.div`
-  border-top: 1px solid ${p => p.theme.border}4d;
+  border-top: 1px solid ${p => p.theme.borderInverse};
 `
 
 const Item = styled.div`
-  border-bottom: 1px solid ${p => p.theme.border}4d;
+  border-bottom: 1px solid ${p => p.theme.borderInverse};
 `
 
 const Question = styled.button`
@@ -52,8 +51,8 @@ const Question = styled.button`
   justify-content: space-between;
   gap: 24px;
   width: 100%;
-  min-height: 56px;
-  padding: 14px 0;
+  min-height: 64px;
+  padding: 20px 0;
   border: 0;
   background: none;
   cursor: pointer;
@@ -65,12 +64,18 @@ const Question = styled.button`
 
   svg {
     flex-shrink: 0;
-    transition: transform 0.35s ${ease.inOut};
+    opacity: 0.6;
+    transition: transform 0.45s ${ease.out}, opacity 0.3s ${ease.inOut};
+  }
+
+  &:hover svg {
+    opacity: 1;
   }
 
   /* O + gira ate virar x: o mesmo icone abre e fecha. */
   &[aria-expanded='true'] svg {
     transform: rotate(45deg);
+    opacity: 1;
   }
 `
 
@@ -79,7 +84,7 @@ const Question = styled.button`
 const Answer = styled.div<{ $open: boolean }>`
   display: grid;
   grid-template-rows: ${p => (p.$open ? '1fr' : '0fr')};
-  transition: grid-template-rows 0.35s ${ease.inOut};
+  transition: grid-template-rows 0.45s ${ease.out};
 
   > div {
     overflow: hidden;
@@ -87,9 +92,9 @@ const Answer = styled.div<{ $open: boolean }>`
 
   p {
     max-width: 60ch;
-    padding: 0 40px 20px 0;
+    padding: 0 48px 24px 0;
     font-size: ${p => p.theme.type.bodyLg.size};
-    line-height: 1.6;
+    line-height: 1.65;
     color: ${p => p.theme.textInverseMuted};
   }
 `

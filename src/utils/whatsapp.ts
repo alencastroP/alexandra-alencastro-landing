@@ -5,14 +5,6 @@ import { perfil, type Objetivo } from '../data/content'
  * Alexandra, ja com os dados do formulario escritos na mensagem.
  */
 
-const NUMERO_EXEMPLO = '5584999999999'
-
-if (import.meta.env.DEV && perfil.whatsapp === NUMERO_EXEMPLO) {
-  console.warn(
-    '[whatsapp] O numero ainda e o de exemplo -- troque `perfil.whatsapp` em src/data/content.ts antes de publicar.',
-  )
-}
-
 /** Link wa.me, com mensagem opcional ja preenchida. */
 export function whatsappUrl(mensagem?: string) {
   const base = `https://wa.me/${perfil.whatsapp}`

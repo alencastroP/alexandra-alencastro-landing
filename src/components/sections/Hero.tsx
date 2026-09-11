@@ -2,7 +2,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { Container } from '../ui/Container'
 import { OutlineButton, PrimaryAction } from '../ui/Button'
-import { Badge, IconCircle } from '../ui/Badge'
+import { Badge } from '../ui/Badge'
 import { Icon } from '../ui/Icon'
 import { Reveal } from '../ui/Reveal'
 import { ease, fadeIn, lineUp, riseIn } from '../../styles/animations'
@@ -29,7 +29,11 @@ const CANTO = '45, 37, 24'
 
 const Wrap = styled.section`
   position: relative;
-  padding-bottom: ${p => p.theme.layout.sectionGap};
+  padding-bottom: 96px;
+
+  @media (max-width: ${bp.tablet}) {
+    padding-bottom: 72px;
+  }
 `
 
 const Stage = styled.div`
@@ -101,17 +105,17 @@ const Copy = styled.div`
 `
 
 const Selo = styled(Badge)`
-  animation: ${fadeIn} 0.8s ${ease.out} both;
+  animation: ${fadeIn} 1.2s ${ease.out} both;
 `
 
 /* Entrelinha 0.96 em vez do 0.8 do token: com tres linhas e acentos
    (ó, é), o 0.8 encosta um acento na linha de cima. */
 const Title = styled.h1`
-  margin: 20px 0 24px;
+  margin: 24px 0 28px;
   font-weight: 400;
   font-size: clamp(56px, 6.4vw, ${p => p.theme.type.heroXl.size});
   line-height: 0.96;
-  letter-spacing: -0.014em;
+  letter-spacing: -0.016em;
 
   @media (max-width: ${bp.tablet}) {
     font-size: clamp(44px, 11.5vw, ${p => p.theme.type.hero.size});
@@ -129,19 +133,20 @@ const Line = styled.span<{ $i: number }>`
 
   > span {
     display: block;
-    animation: ${lineUp} 0.95s ${ease.out} both;
-    animation-delay: ${p => 0.15 + p.$i * 0.09}s;
+    animation: ${lineUp} 1.2s ${ease.out} both;
+    animation-delay: ${p => 0.15 + p.$i * 0.08}s;
   }
 `
 
-/* Driftwood (o cinza de apoio da marca) nao passa em contraste neste fundo
-   oliva; o creme a 80% passa com folga e continua sendo a mesma tinta. */
+/* Driftwood nao passa em contraste neste fundo oliva; o creme a 80%
+   passa com folga e continua sendo a mesma tinta. */
 const Lead = styled.p`
-  max-width: 440px;
-  margin-bottom: 28px;
+  max-width: 420px;
+  margin-bottom: 32px;
   font-size: ${p => p.theme.type.bodyLg.size};
+  line-height: 1.6;
   color: ${p => p.theme.text}cc;
-  animation: ${riseIn} 0.8s ${ease.out} both;
+  animation: ${riseIn} 1s ${ease.out} both;
   animation-delay: 0.5s;
 `
 
@@ -150,8 +155,8 @@ const Actions = styled.div`
   flex-wrap: wrap;
   align-items: center;
   gap: 12px;
-  animation: ${riseIn} 0.8s ${ease.out} both;
-  animation-delay: 0.62s;
+  animation: ${riseIn} 1s ${ease.out} both;
+  animation-delay: 0.6s;
 
   @media (max-width: ${bp.tablet}) {
     justify-content: center;
@@ -163,10 +168,10 @@ const Meta = styled.p`
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 20px;
-  margin-top: 24px;
+  margin-top: 28px;
   font-size: ${p => p.theme.type.body.size};
   color: ${p => p.theme.text}b3;
-  animation: ${fadeIn} 0.8s ${ease.out} both;
+  animation: ${fadeIn} 1.2s ${ease.out} both;
   animation-delay: 0.8s;
 
   span {
@@ -259,7 +264,7 @@ const Photo = styled.img`
   );
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
-  animation: ${fadeIn} 1.2s ${ease.out} both;
+  animation: ${fadeIn} 1.6s ${ease.out} both;
 `
 
 /** Se a foto nao carregar, a capa mostra o monograma no mesmo espaco. */
@@ -269,7 +274,7 @@ const Fallback = styled.div`
   ${photoSize}
   font-size: 120px;
   letter-spacing: -0.02em;
-  color: ${p => p.theme.border};
+  color: ${p => p.theme.borderStrong};
 `
 
 function Portrait() {
@@ -298,44 +303,51 @@ const Seam = styled.div`
   right: 0;
   bottom: 0;
   z-index: 1;
-  height: 120px;
+  height: 140px;
   pointer-events: none;
   background: linear-gradient(180deg, ${p => p.theme.bg}00, ${p => p.theme.bg});
 `
 
 /* ------------------------------------------------------------------ */
-/* Diferenciais (3 colunas logo abaixo da capa, ja no espresso)        */
+/* Diferenciais: um filete so em cima das tres colunas, nao um por item */
 /* ------------------------------------------------------------------ */
 
 const Features = styled.ul`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0 28px;
-  margin-top: 40px;
+  gap: 32px 56px;
+  margin-top: 48px;
+  padding-top: 36px;
+  border-top: 1px solid ${p => p.theme.border};
 
   @media (max-width: ${bp.tablet}) {
     grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
     margin-top: 32px;
   }
 `
 
+/* Icone solto ao lado do titulo, sem circulo em volta: o circulo com
+   filete em todo icone era enfeite, nao informacao. */
 const Feature = styled.li`
-  display: flex;
-  align-items: flex-start;
-  gap: ${p => p.theme.layout.elementGap};
-  padding: ${p => p.theme.layout.cardPadding} 0 24px;
-  border-bottom: 1px solid ${p => p.theme.border};
-
   strong {
-    display: block;
-    margin-bottom: 4px;
-    font-size: ${p => p.theme.type.body.size};
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: ${p => p.theme.type.bodyLg.size};
     font-weight: 500;
   }
 
+  strong svg {
+    flex-shrink: 0;
+    color: ${p => p.theme.textMuted};
+  }
+
   p {
+    max-width: 36ch;
     font-size: ${p => p.theme.type.body.size};
-    line-height: ${p => p.theme.type.body.leading};
+    line-height: 1.65;
     color: ${p => p.theme.textMuted};
   }
 `
@@ -385,17 +397,15 @@ export function Hero() {
       </Stage>
 
       <Container>
-        <Reveal delay={0.1}>
+        <Reveal>
           <Features>
             {features.map(feature => (
               <Feature key={feature.titulo}>
-                <IconCircle>
-                  <Icon name={feature.icon} />
-                </IconCircle>
-                <div>
-                  <strong>{feature.titulo}</strong>
-                  <p>{feature.texto}</p>
-                </div>
+                <strong>
+                  <Icon name={feature.icon} size={18} />
+                  {feature.titulo}
+                </strong>
+                <p>{feature.texto}</p>
               </Feature>
             ))}
           </Features>

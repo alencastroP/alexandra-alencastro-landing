@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useMediaQuery } from './useMediaQuery'
 
 /**
  * Diz se o sistema pediu menos movimento.
@@ -8,15 +8,5 @@ import { useEffect, useState } from 'react'
  * parar de girar e mostrar tudo de uma vez.
  */
 export function useReducedMotion() {
-  const [reduzido, setReduzido] = useState(false)
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const aplicar = () => setReduzido(mq.matches)
-    aplicar()
-    mq.addEventListener('change', aplicar)
-    return () => mq.removeEventListener('change', aplicar)
-  }, [])
-
-  return reduzido
+  return useMediaQuery('(prefers-reduced-motion: reduce)')
 }

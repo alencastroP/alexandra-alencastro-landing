@@ -9,21 +9,22 @@ export const Badge = styled.span<{ $variant?: 'filled' | 'outline' }>`
   border-radius: ${p => p.theme.radius.pill};
   font-size: ${p => p.theme.type.caption.size};
   line-height: ${p => p.theme.type.caption.leading};
-  letter-spacing: ${p => p.theme.type.caption.tracking};
+  letter-spacing: 0.02em;
   color: ${p => p.theme.text};
 
+  /* Preenchida e so um veu de creme a 7%: some no fundo sem sumir. */
   ${p =>
     p.$variant === 'outline'
       ? css`
-          border: 1px solid ${p.theme.text};
+          border: 1px solid ${p.theme.borderStrong};
         `
       : css`
-          background: ${p.theme.border};
-          border: 1px solid ${p.theme.border};
+          background: rgba(255, 241, 224, 0.07);
+          border: 1px solid transparent;
         `}
 `
 
-/** Circulo com filete walnut que abriga os icones de linha. */
+/** Circulo com filete que abriga um icone de linha. */
 export const IconCircle = styled.span<{ $size?: number }>`
   display: inline-grid;
   place-items: center;
@@ -31,6 +32,6 @@ export const IconCircle = styled.span<{ $size?: number }>`
   width: ${p => p.$size ?? 40}px;
   height: ${p => p.$size ?? 40}px;
   border-radius: ${p => p.theme.radius.pill};
-  border: 1px solid ${p => p.theme.border};
+  border: 1px solid ${p => p.theme.borderStrong};
   color: ${p => p.theme.text};
 `

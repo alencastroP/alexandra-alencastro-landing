@@ -8,9 +8,6 @@ import fotoAlexandra from '../components/alexandra.jpg'
  * nada de "solucao personalizada" ou "experiencia unica". Se uma frase
  * podia estar no site de qualquer corretora do Brasil, ela nao serve aqui.
  *
- * >> FALTA PREENCHER: o WhatsApp (`whatsapp` e `whatsappExibicao`). Sem
- *    ele, todos os botoes da pagina caem num numero de exemplo.
- *
  * Nao ha numero de resultado nem depoimento nesta pagina de proposito:
  * nenhum dos dois existia de verdade. Quando houver (print de conversa,
  * avaliacao do Google, numero real de vendas), da para colocar.
@@ -25,12 +22,12 @@ export const perfil = {
   estado: 'RN',
   regiao: 'Natal e região metropolitana',
   creci: 'CRECI-RN 6091',
-  /** [PREENCHER] So digitos: 55 + DDD 84 + numero. */
-  whatsapp: '5584999999999',
-  /** [PREENCHER] Como o numero aparece escrito na pagina. */
-  whatsappExibicao: '(84) 99999-9999',
-  instagram: 'https://www.instagram.com/midhomenatal',
-  instagramUsuario: '@midhomenatal',
+  /** So digitos: 55 + DDD + numero. */
+  whatsapp: '5584999628398',
+  /** Como o numero aparece escrito na pagina. */
+  whatsappExibicao: '(84) 99962-8398',
+  instagram: 'https://www.instagram.com/alexandraalencastro_/',
+  instagramUsuario: '@alexandraalencastro_',
   /** Foto da capa: src/components/alexandra.jpg (o Vite poe hash no nome no build). */
   foto: fotoAlexandra,
   tempoResposta: 'até 2 horas',

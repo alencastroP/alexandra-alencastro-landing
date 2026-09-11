@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import { Section } from '../ui/Section'
 import { Container } from '../ui/Container'
 import { Eyebrow } from '../ui/Heading'
-import { Seal } from '../ui/Seal'
 import { Reveal } from '../ui/Reveal'
 import { bp } from '../../styles/theme'
 import { perfil, secoes, sobre } from '../../data/content'
@@ -10,46 +9,25 @@ import { perfil, secoes, sobre } from '../../data/content'
 const Grid = styled.div`
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-  gap: 52px;
+  gap: 80px;
   align-items: center;
 
   @media (max-width: ${bp.tablet}) {
     grid-template-columns: minmax(0, 1fr);
-    gap: 40px;
+    gap: 48px;
   }
 `
 
-const Palco = styled.div`
-  position: relative;
-  isolation: isolate;
-  display: flex;
-  justify-content: center;
-  padding: 20px 0;
-`
-
-/* Monograma gigante atras do retrato: textura, nao leitura. */
-const Monograma = styled.span`
-  position: absolute;
-  top: -24px;
-  left: -8px;
-  z-index: -1;
-  font-size: clamp(160px, 26vw, 260px);
-  line-height: 0.8;
-  letter-spacing: -0.04em;
-  color: ${p => p.theme.text};
-  opacity: 0.05;
-  user-select: none;
-`
-
-/* Arco: o unico canto que foge do raio de 6px do sistema. E de proposito
-   -- e a forma que tira a foto da caixa e conversa com as pilulas. */
+/* Arco: o unico canto que foge do raio de 6px do sistema. E a forma que
+   tira a foto da caixa e conversa com as pilulas. Sem selo, sem marca
+   d'agua: a foto sozinha ja sustenta a coluna. */
 const Arco = styled.div`
-  position: relative;
-  width: min(100%, 340px);
+  width: min(100%, 360px);
   aspect-ratio: 4 / 5;
   overflow: hidden;
+  margin: 0 auto;
   border-radius: 9999px 9999px ${p => p.theme.radius.card} ${p => p.theme.radius.card};
-  border: 1px solid ${p => p.theme.border};
+  background: ${p => p.theme.borderSoft};
 
   img {
     width: 100%;
@@ -60,25 +38,18 @@ const Arco = styled.div`
   }
 `
 
-const Selo = styled(Seal)`
-  position: absolute;
-  right: -10px;
-  bottom: 28px;
-  background: ${p => p.theme.bg};
-`
-
 const Citacao = styled.blockquote`
-  margin-bottom: 28px;
+  margin-bottom: 36px;
 
   p {
     font-size: clamp(28px, 3.6vw, ${p => p.theme.type.headingLg.size});
-    line-height: 1.15;
+    line-height: 1.18;
     letter-spacing: ${p => p.theme.type.headingLg.tracking};
     text-wrap: balance;
   }
 
   footer {
-    margin-top: 16px;
+    margin-top: 18px;
     font-size: ${p => p.theme.type.body.size};
     color: ${p => p.theme.textMuted};
   }
@@ -86,30 +57,32 @@ const Citacao = styled.blockquote`
 
 const Texto = styled.div`
   > p {
+    max-width: 58ch;
     font-size: ${p => p.theme.type.bodyLg.size};
-    line-height: 1.6;
+    line-height: 1.7;
     color: ${p => p.theme.textMuted};
   }
 
   > p + p {
-    margin-top: 14px;
+    margin-top: 16px;
   }
 
   dl {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0 32px;
-    margin-top: 32px;
+    gap: 0 40px;
+    margin-top: 40px;
   }
 
   dl > div {
-    padding: 14px 0;
+    padding: 16px 0;
     border-top: 1px solid ${p => p.theme.border};
   }
 
   dt {
-    margin-bottom: 2px;
-    font-size: ${p => p.theme.type.body.size};
+    margin-bottom: 4px;
+    font-size: ${p => p.theme.type.caption.size};
+    letter-spacing: 0.04em;
     color: ${p => p.theme.textMuted};
   }
 
@@ -131,21 +104,17 @@ export function About() {
       <Container>
         <Grid>
           <Reveal>
-            <Palco>
-              <Monograma aria-hidden="true">{perfil.monograma}</Monograma>
-              <Arco>
-                <img
-                  src={perfil.foto}
-                  alt={`${perfil.nome} sorrindo, em retrato de estúdio`}
-                  loading="lazy"
-                  decoding="async"
-                />
-                <Selo $angulo={-6}>{perfil.creci}</Selo>
-              </Arco>
-            </Palco>
+            <Arco>
+              <img
+                src={perfil.foto}
+                alt={`${perfil.nome} sorrindo, em retrato de estúdio`}
+                loading="lazy"
+                decoding="async"
+              />
+            </Arco>
           </Reveal>
 
-          <Reveal delay={0.1}>
+          <Reveal delay={0.08}>
             <div>
               <Eyebrow as="h2" id="sobre-titulo">
                 {secoes.sobre.rotulo}

@@ -1,6 +1,6 @@
-import { useEffect, useState, type CSSProperties } from 'react'
-import styled, { css } from 'styled-components'
-import { dotOn, ease } from '../../styles/animations'
+import { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { ease } from '../../styles/animations'
 import { useInView } from '../../hooks/useInView'
 import { useCountUp } from '../../hooks/useCountUp'
 import { VisuallyHidden } from './VisuallyHidden'
@@ -12,12 +12,14 @@ const RADIUS = 138
 const DOTS = 365
 /** Quanto do anel o arco percorre (0 a 1). */
 const VOLTA = 0.978
+/** Arco, ponteiro e numero terminam juntos. */
+const DURACAO = 2.4
 
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
   width: min(100%, 380px);
   margin: 0 auto;
 `
@@ -34,41 +36,34 @@ const Mostrador = styled.div`
   }
 `
 
-/* O anel inteiro acende em onda, do topo no sentido do relogio: o ano
-   passando. Sao 365 pontos, entao o atraso de cada um vai por variavel
-   inline -- se fosse prop do styled, seriam 365 classes CSS. */
-const Dot = styled.circle<{ $on: boolean }>`
+/* Os 365 pontos aparecem juntos, como textura do anel. Animar um a um
+   era ruido, nao informacao -- quem conta a historia e o arco. */
+const Pontos = styled.g<{ $on: boolean }>`
   fill: ${p => p.theme.text};
-  opacity: 0.16;
-
-  ${p =>
-    p.$on &&
-    css`
-      animation: ${dotOn} 0.5s ${ease.out} both;
-      animation-delay: var(--atraso);
-    `}
+  opacity: ${p => (p.$on ? 0.2 : 0)};
+  transition: opacity 1.2s ${ease.out};
 `
 
 /* O arco ambar corre por cima do anel: e o tempo que ja passou. */
 const Arco = styled.circle`
   fill: none;
   stroke: ${p => p.theme.accent};
-  stroke-width: 2.5;
+  stroke-width: 2;
   stroke-linecap: round;
-  transition: stroke-dashoffset 2s ${ease.out};
+  transition: stroke-dashoffset ${DURACAO}s ${ease.out};
 `
 
-/* Ponteiro curto, preso na borda: ele marca onde o arco parou sem
-   atravessar o numero no meio do mostrador. */
+/* Ponteiro curto, preso na borda: marca onde o arco parou sem atravessar
+   o numero no meio do mostrador. */
 const Ponteiro = styled.g<{ $on: boolean }>`
   transform-box: view-box;
   transform-origin: ${CENTER}px ${CENTER}px;
   transform: rotate(${p => (p.$on ? VOLTA * 360 : 0)}deg);
-  transition: transform 2s ${ease.out};
+  transition: transform ${DURACAO}s ${ease.out};
 
   line {
     stroke: ${p => p.theme.accent};
-    stroke-width: 2.5;
+    stroke-width: 2;
     stroke-linecap: round;
   }
 `
@@ -85,28 +80,27 @@ const Readout = styled.div`
 
   strong {
     font-size: clamp(52px, 15vw, 69px);
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1;
-    letter-spacing: -0.69px;
+    letter-spacing: -0.02em;
     font-variant-numeric: tabular-nums;
   }
 
   em {
-    margin-top: 6px;
-    font-size: ${p => p.theme.type.body.size};
+    margin-top: 10px;
+    font-size: ${p => p.theme.type.caption.size};
     font-style: normal;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: ${p => p.theme.textMuted};
   }
 `
 
-/* A legenda mora fora do circulo: dentro dele ela encostava nos pontos
-   do anel. */
+/* A legenda mora fora do circulo: dentro dele ela encostava nos pontos. */
 const Legenda = styled.p`
-  max-width: 300px;
+  max-width: 290px;
   font-size: ${p => p.theme.type.body.size};
-  line-height: 1.5;
+  line-height: 1.6;
   text-align: center;
   color: ${p => p.theme.textMuted};
 `
@@ -124,7 +118,7 @@ interface DialProps {
  */
 export function Dial({ valor, unidade, descricao }: DialProps) {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.35 })
-  const count = useCountUp(valor, inView, 1800)
+  const count = useCountUp(valor, inView, DURACAO * 1000)
   const [correu, setCorreu] = useState(false)
 
   // O arco e o ponteiro sao transicao, nao keyframe: precisam de um quadro
@@ -145,13 +139,12 @@ export function Dial({ valor, unidade, descricao }: DialProps) {
     <Wrap ref={ref}>
       <Mostrador>
         <svg viewBox={`0 0 ${SIZE} ${SIZE}`} aria-hidden="true" focusable="false">
-          {Array.from({ length: DOTS }, (_, i) => {
-            const { cx, cy } = pointAt(i)
-            const atraso = {
-              '--atraso': `${(0.2 + (i / DOTS) * 1.6).toFixed(3)}s`,
-            } as CSSProperties
-            return <Dot key={i} cx={cx} cy={cy} r={1.4} $on={inView} style={atraso} />
-          })}
+          <Pontos $on={inView}>
+            {Array.from({ length: DOTS }, (_, i) => {
+              const { cx, cy } = pointAt(i)
+              return <circle key={i} cx={cx} cy={cy} r={1.2} />
+            })}
+          </Pontos>
 
           <Arco
             cx={CENTER}
@@ -163,7 +156,7 @@ export function Dial({ valor, unidade, descricao }: DialProps) {
           />
 
           <Ponteiro $on={correu}>
-            <line x1={CENTER} y1={CENTER - RADIUS - 9} x2={CENTER} y2={CENTER - RADIUS + 13} />
+            <line x1={CENTER} y1={CENTER - RADIUS - 8} x2={CENTER} y2={CENTER - RADIUS + 12} />
           </Ponteiro>
         </svg>
 

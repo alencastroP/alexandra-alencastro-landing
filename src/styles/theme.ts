@@ -6,6 +6,11 @@
  * e o sistema -- se precisar de uma cor nova, provavelmente o problema e
  * de hierarquia, nao de paleta.
  *
+ * Duas mudancas deliberadas em relacao ao DESIGN.md, ambas de acabamento:
+ * os filetes sao creme translucido em vez de walnut chapado (o marrom
+ * opaco deixava as linhas sujas sobre o espresso), e o texto de apoio e
+ * um tom mais claro que o driftwood, que ficava abaixo do contraste AA.
+ *
  * O site e dark-only por decisao de marca, entao existe um tema so.
  */
 
@@ -44,9 +49,13 @@ export interface AppTheme {
   textInverse: string
   /** Texto de apoio sobre a faixa clara. */
   textInverseMuted: string
-  /** Filetes de 1px em cards e divisorias. */
+  /** Filete padrao sobre o escuro: divisorias e contornos quietos. */
   border: string
-  /** Filete quase invisivel, para profundidade interna de paineis. */
+  /** Filete de destaque: controles, hover. */
+  borderStrong: string
+  /** Filete sobre a faixa clara. */
+  borderInverse: string
+  /** Quase invisivel: fundo de imagem carregando, rodape. */
   borderSoft: string
   /** Contorno dos campos de formulario em repouso. */
   borderInput: string
@@ -90,12 +99,15 @@ export const theme: AppTheme = {
   bgDeep: palette.midnightCocoa,
   bgInverse: palette.warmCream,
   text: palette.warmCream,
-  textMuted: palette.driftwood,
+  /* 6:1 sobre o espresso. O driftwood original ficava em 4,3:1. */
+  textMuted: '#9c9184',
   textInverse: palette.espresso,
   textInverseMuted: palette.cedar,
-  border: palette.walnut,
-  borderSoft: palette.burntEdge,
-  borderInput: palette.cedar,
+  border: 'rgba(255, 241, 224, 0.09)',
+  borderStrong: 'rgba(255, 241, 224, 0.2)',
+  borderInverse: 'rgba(20, 11, 0, 0.12)',
+  borderSoft: 'rgba(255, 241, 224, 0.05)',
+  borderInput: 'rgba(255, 241, 224, 0.18)',
   accent: palette.amberForge,
   onAccent: palette.espresso,
 
@@ -120,7 +132,7 @@ export const theme: AppTheme = {
   layout: {
     maxWidth: '1200px',
     navHeight: '68px',
-    sectionGap: '52px',
+    sectionGap: '56px',
     cardPadding: '12px',
     elementGap: '12px',
   },

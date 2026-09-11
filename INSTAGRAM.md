@@ -6,7 +6,7 @@ cada post leva para o Instagram.
 
 Ela já está ligada ao feed. Falta só a **fonte dos posts** — e isso depende
 de uma credencial que só a dona da conta consegue gerar. Enquanto não
-existir, a seção mostra o convite para o perfil (`@midhomenatal` em letra
+existir, a seção mostra o convite para o perfil (`@alexandraalencastro_` em letra
 grande + botão). **Não há card falso esperando a integração.**
 
 ---
@@ -26,7 +26,7 @@ Worker que já está escrito neste repositório (**opção B**).
 
 ## Antes de tudo: o tipo da conta
 
-`@midhomenatal` precisa ser **Comercial** ou **Criador de conteúdo**
+`@alexandraalencastro_` precisa ser **Comercial** ou **Criador de conteúdo**
 (no app: Configurações → Tipo de conta e ferramentas). Conta pessoal não
 funciona em nenhuma das opções. A antiga *Instagram Basic Display API*, que
 atendia conta pessoal, **foi desligada em dezembro de 2024**.
@@ -58,7 +58,7 @@ cache por 6 horas e renova o token todo mês sozinho.
 **O que você precisa fazer (ou me dar acesso para fazer):**
 
 1. Criar um app no [Meta for Developers](https://developers.facebook.com/),
-   adicionar o produto **Instagram** e vincular a conta `@midhomenatal`.
+   adicionar o produto **Instagram** e vincular a conta `@alexandraalencastro_`.
 2. Gerar um **token de longa duração** com a permissão
    `instagram_business_basic`.
 3. Publicar o Worker:
@@ -126,7 +126,7 @@ ou `{ "data": [...] }`. Vídeo entra pela miniatura (`thumbnail_url`).
 
 ## Resumo do que eu preciso de você
 
-- [ ] Confirmar que `@midhomenatal` é conta **Comercial** ou **Criador**
+- [ ] Confirmar que `@alexandraalencastro_` é conta **Comercial** ou **Criador**
 - [ ] Escolher: **A** (serviço pago, rápido) ou **B** (Worker, sem mensalidade)
 - [ ] Se **A**: a URL do feed em JSON
 - [ ] Se **B**: o token da Meta e uma conta Cloudflare para publicar o Worker
