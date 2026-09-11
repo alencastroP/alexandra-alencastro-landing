@@ -1,0 +1,21 @@
+name = "instagram-feed-alexandra"
+main = "worker.ts"
+compatibility_date = "2026-01-01"
+
+# Dominio do site, para o feed nao ficar aberto a qualquer origem.
+# [vars]
+# ORIGEM_PERMITIDA = "https://seudominio.com.br"
+
+# Guarda o token renovado. Crie com:
+#   wrangler kv namespace create FEED_KV
+# e cole o id devolvido aqui.
+# [[kv_namespaces]]
+# binding = "FEED_KV"
+# id = "..."
+
+# Renova o token todo dia 1o, as 3h UTC (o token vale 60 dias).
+# [triggers]
+# crons = ["0 3 1 * *"]
+
+# O token entra como secret, nunca como var:
+#   wrangler secret put INSTAGRAM_TOKEN

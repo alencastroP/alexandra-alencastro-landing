@@ -1,0 +1,27 @@
+# Blueprint do Render para este projeto -- site estatico gerado pelo Vite.
+#
+# Como usar: no painel do Render, New > Blueprint > conecte este
+# repositorio. O Render le este arquivo sozinho e cria o servico abaixo
+# ja configurado; so falta revisar as variaveis de ambiente antes do
+# primeiro deploy (ver README.md > Deploy).
+services:
+  - type: web
+    name: alexandra-alencastro-landing
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    pullRequestPreviewsEnabled: false
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      # [PREENCHER] URL do feed do Instagram (server/instagram-feed ou um
+      # servico pronto). Sem ela, a secao de Instagram mostra o convite
+      # para o perfil em vez da linha de posts -- ver INSTAGRAM.md.
+      - key: VITE_INSTAGRAM_FEED_URL
+        value: ''
+    routes:
+      # A pagina e uma unica tela (ancoras internas, sem rotas); a regra
+      # so evita 404 se alguem acessar com barra no fim ou path direto.
+      - type: rewrite
+        source: /*
+        destination: /index.html
